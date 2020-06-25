@@ -20,7 +20,7 @@ export default {
     };
   },
   methods: {
-    enterCoba: () => {
+    enterCoba() {
       socket.emit('coba', this.kucoba);
     },
   },
