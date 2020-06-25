@@ -17,17 +17,25 @@ io.on('connection', (socket) => {
   socket.on('createRoom', function (response){
     let room = {
       name: response.name,
-      users: [],
+      users: [{
+        name: response.admin,
+        score: 0,
+      }],
       admin: response.admin
     }
     rooms.push(room)
+    console.log(rooms)
     io.emit('createRoom', rooms)
   })
 
   socket.on('joinGame', function(response){
     socket.join(response.name, function(){
       let roomIndex = rooms.findIndex(i => i.name===response.name)
-      rooms[roomIndex].users.push(response.username)
+      rooms[roomIndex].users.push({
+        name: response.username,
+        score: 0
+      })
+      console.log(rooms)
       socket.emit('joinGame', rooms)
     })
   })

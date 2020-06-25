@@ -6,7 +6,7 @@
                 <h1 style="text-center">Typing Race</h1>
             </div>
             <div class="col-2 align-self-end">
-                <h6>Nama User</h6>
+                <h6>{{username}}</h6>
             </div>
         </div>
         <div class="row justify-content-center m-3">
@@ -69,7 +69,6 @@ export default {
   data() {
     return {
       newRoom: '',
-      rooms: [],
     };
   },
   methods: {
@@ -78,6 +77,7 @@ export default {
         name: this.newRoom,
         admin: localStorage.username,
       };
+      this.$router.push('/about');
       socket.emit('createRoom', payload);
     },
     joinGame(name) {
@@ -86,11 +86,24 @@ export default {
         username: localStorage.username,
       };
       socket.emit('joinGame', payload);
+      this.$router.push('/about');
+    },
+  },
+  computed: {
+    username() {
+      return this.$store.state.username;
+    },
+    rooms() {
+      return this.$store.state.rooms;
     },
   },
   created() {
     socket.on('createRoom', (data) => {
-      this.rooms = data;
+      this.$store.commit('setRooms', data);
+    });
+
+    socket.on('joinGame', (data) => {
+      this.$store.commit('setRooms', data);
     });
   },
 };
