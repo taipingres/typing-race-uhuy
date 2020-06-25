@@ -1,0 +1,97 @@
+<template>
+    <div class="container">
+        <div class="row justify-content-start px-5">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <h1 style="text-center">Typing Race</h1>
+            </div>
+            <div class="col-2 align-self-end">
+                <h6>Nama User</h6>
+            </div>
+        </div>
+        <div class="row justify-content-center m-3">
+            <div class="col-11">
+                <div class="card" style="min-height:90vh">
+                    <div class="card-header">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-3"></div>
+                                <div class="col-6">
+                                    <h4>Choose Your Room</h4>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text"
+                                    class="form-control mr-sm-2" v-model= "newRoom">
+                                    <input type="button"
+                                    class="btn btn-outline-success my-2 my-sm-0"
+                                    value="Create" @click= "createRoom">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div v-if= "this.rooms.length !== 0">
+                            <div v-for = '(room, i) in rooms' :key= "i">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    {{room.name}}
+                                                </h5>
+                                                <h6 class="card-title">
+                                                    admin: {{room.admin}}
+                                                </h6>
+                                                <a class="btn btn-info"
+                                                @click= "joinGame(room.name)" >
+                                                    Join
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <p class="text-center">No available room.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import socket from '@/config/socket';
+
+export default {
+  name: 'Room',
+  data() {
+    return {
+      newRoom: '',
+      rooms: [],
+    };
+  },
+  methods: {
+    createRoom() {
+      const payload = {
+        name: this.newRoom,
+        admin: localStorage.username,
+      };
+      socket.emit('createRoom', payload);
+    },
+    joinGame(name) {
+      const payload = {
+        name,
+        username: localStorage.username,
+      };
+      socket.emit('joinGame', payload);
+    },
+  },
+  created() {
+    socket.on('createRoom', (data) => {
+      this.rooms = data;
+    });
+  },
+};
+</script>
