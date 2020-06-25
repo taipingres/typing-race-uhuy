@@ -25,7 +25,7 @@ export default {
     login() {
       localStorage.setItem('isloggedin', this.username);
       this.$store.commit('SET_ISLOGGEDIN', this.username);
-      this.$router.push('room');
+      localStorage.setItem('username', this.username);
     },
   },
 };

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
 import Room from '../views/Room.vue';
 import Login from '../views/Login.vue';
 
@@ -8,10 +7,9 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    meta: { requiresAuth: true },
-    component: Home,
+    path: '/login',
+    name: 'Login',
+    component: Login,
   },
   {
     path: '/about',
@@ -27,11 +25,6 @@ const routes = [
     name: 'Room',
     meta: { requiresAuth: true },
     component: Room,
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
   },
 ];
 
