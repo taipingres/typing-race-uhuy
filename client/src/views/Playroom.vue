@@ -1,4 +1,58 @@
-<template> </template>
+<template>
+  <div class="container">
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">{{ this.soal }}</h1>
+        <button type="button" class="btn btn-success btn-lg">Start Game</button>
+        <br />
+        <br />
+        <h3>{{ this.timer }}</h3>
+      </div>
+    </div>
+    <div class="input-group input-group-lg">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-lg">input type here</span>
+      </div>
+      <input
+        type="text"
+        class="form-control"
+        aria-label="Sizing example input"
+        aria-describedby="inputGroup-sizing-lg"
+      />
+    </div>
+    <br />
+    <div class="row">
+      <div class="card col-md-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title bg-primary">Player 1</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the</p>
+        </div>
+      </div>
+      <div class="card col-md-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title bg-danger">Player 2</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the</p>
+        </div>
+      </div>
+      <div class="card col-md-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title bg-warning">Player 3</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the</p>
+        </div>
+      </div>
+      <div class="card col-md-3" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title bg-info">Player 4</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+          <p class="card-text">Some quick example text to build on the</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <script>
 import axios from "axios";

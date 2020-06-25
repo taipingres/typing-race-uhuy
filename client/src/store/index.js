@@ -5,10 +5,24 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    rooms: [],
+    username: localStorage.username,
+    isLoggedin: null,
   },
   mutations: {
+    setRooms(state, payload) {
+      state.rooms = payload;
+    },
+    SET_ISLOGGEDIN(state, payload) {
+      state.isLogin = payload;
+    },
   },
   actions: {
+    checkLogin({ commit }) {
+      if (localStorage.isloggedin) {
+        commit('SET_ISLOGGEDIN', localStorage.isloggedin);
+      }
+    },
   },
   modules: {
   },
