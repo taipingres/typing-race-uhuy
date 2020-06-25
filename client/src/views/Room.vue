@@ -77,7 +77,10 @@ export default {
         name: this.newRoom,
         admin: localStorage.username,
       };
+<<<<<<< HEAD
       this.$router.push('/about');
+=======
+>>>>>>> development
       socket.emit('createRoom', payload);
     },
     joinGame(name) {
@@ -86,6 +89,7 @@ export default {
         username: localStorage.username,
       };
       socket.emit('joinGame', payload);
+<<<<<<< HEAD
       this.$router.push('/about');
     },
   },
@@ -95,15 +99,21 @@ export default {
     },
     rooms() {
       return this.$store.state.rooms;
+=======
+>>>>>>> development
     },
   },
   created() {
     socket.on('createRoom', (data) => {
+<<<<<<< HEAD
       this.$store.commit('setRooms', data);
     });
 
     socket.on('joinGame', (data) => {
       this.$store.commit('setRooms', data);
+=======
+      this.rooms = data;
+>>>>>>> development
     });
   },
 };
