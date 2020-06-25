@@ -1,0 +1,45 @@
+body {
+    background-color: grey;
+}
+
+.title {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.roomContainer{
+    margin: 0 auto;
+    padding: 0 35px;
+    width: 1000px;
+    height: 500px;
+    overflow: auto;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    margin: 10px;
+}
+
+.createServer {
+    margin-top: 20px;
+}
+
+#create {
+    width: 400px;
+}
+
+.form-control{
+    margin: 0 auto;
+}
+
+.btn {
+    margin: 10px auto;
+    width: 400px;
+    /* height: 45px; */
+}
