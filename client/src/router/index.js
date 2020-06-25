@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Playroom from '../views/Playroom.vue';
 import Room from '../views/Room.vue';
 import Login from '../views/Login.vue';
 
@@ -12,13 +13,10 @@ const routes = [
     component: Login,
   },
   {
-    path: '/about',
-    name: 'About',
+    path: '/play-room',
+    name: 'Playroom',
     meta: { requiresAuth: true },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    component: Playroom,
   },
   {
     path: '/room',
