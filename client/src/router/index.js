@@ -15,6 +15,7 @@ const routes = [
   {
     path: '/play-room',
     name: 'Playroom',
+    meta: { requiresAuth: true },
     component: Playroom,
   },
   {
