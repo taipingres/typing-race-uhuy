@@ -9,9 +9,9 @@ let rooms = []
 
 app.use(cors());
 
-app.get('/', (req, res)=>{
-  res.send('welcome to the jungle')
-})
+// app.get('/', (req, res)=>{
+//   res.send('welcome to the jungle')
+// })
 
 io.on('connection', (socket) => {
   socket.on('getRooms', function (response){
