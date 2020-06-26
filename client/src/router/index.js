@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Playroom from '../views/Playroom.vue';
 import Room from '../views/Room.vue';
 import Login from '../views/Login.vue';
+import Ending from '../views/Ending.vue';
 
 Vue.use(VueRouter);
 
@@ -23,6 +24,12 @@ const routes = [
     name: 'Room',
     meta: { requiresAuth: true },
     component: Room,
+  },
+  {
+    path: '/end',
+    name: 'Ending',
+    meta: { requiresAuth: true },
+    component: Ending,
   },
 ];
 

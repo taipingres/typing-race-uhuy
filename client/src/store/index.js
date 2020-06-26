@@ -9,7 +9,8 @@ export default new Vuex.Store({
     rooms: [],
     username: localStorage.username,
     isLoggedin: null,
-    soal: []
+    soal: [],
+    countDown: null,
   },
   mutations: {
     setRooms(state, payload) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     SET_ISLOGGEDIN(state, payload) {
       state.isLogin = payload;
+    },
+    SET_COUNTDOWN(state, payload) {
+      state.countDown = payload;
     },
   },
   actions: {

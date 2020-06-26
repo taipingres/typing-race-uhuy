@@ -4,7 +4,7 @@
       <div class="box">
         <div class="sbox1">
           <div class="timerBox">
-            <p>timer</p>
+            <p>{{countDown}}</p>
           </div>
           <div class="tbox">
             <span class="question">{{ this.soalString }}</span>
@@ -56,8 +56,18 @@ export default {
     socket.on("updateScore", data => {
       this.$store.commit("setRooms", data);
     });
+
+    socket.on('counter', (data) => {
+      this.$store.commit('SET_COUNTDOWN', data);
+    });
+    socket.on('end', (data) => {
+      this.$router.push('/end');
+    });
   },
   computed: {
+    countDown() {
+      return this.$store.state.countDown;
+    },
     stateRoom() {
       return this.$store.state.rooms;
     },
