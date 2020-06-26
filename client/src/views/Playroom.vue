@@ -21,7 +21,12 @@
           </div>
           <div class="buttonContainer">
             <div class="group">
-              <button type="button" class="button btn btn-success" @click="startGame">START</button>
+              <button
+                type="button"
+                class="button btn btn-success"
+                @click="startGame"
+                :disabled="disabledButton"
+              >START</button>
               <button type="button" class="button btn btn-danger">LEAVE</button>
             </div>
           </div>
@@ -122,7 +127,10 @@ export default {
           this.soalString = setSoal[0];
           this.$store.commit("setSoal", setSoal);
           //   console.log(response.data);
-          socket.emit("startGame", { receiver: localStorage.room, soal: setSoal });
+          socket.emit("startGame", {
+            receiver: localStorage.room,
+            soal: setSoal
+          });
         })
         .catch(error => {
           console.log(error);
@@ -155,14 +163,20 @@ export default {
           let generateSoal = response.data.kota_kabupaten[randomNumber].nama;
           this.soal = generateSoal;
           //   console.log(response.data);
-          socket.emit("getSoal", { receiver: localStorage.room, soal: generateSoal });
+          socket.emit("getSoal", {
+            receiver: localStorage.room,
+            soal: generateSoal
+          });
         })
         .catch(error => {
           console.log(error);
         });
     },
     addScore() {
-      socket.emit("addScore", { username: localStorage.username, room: localStorage.room });
+      socket.emit("addScore", {
+        username: localStorage.username,
+        room: localStorage.room
+      });
     },
     endGame() {}
   }
