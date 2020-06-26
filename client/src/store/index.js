@@ -9,10 +9,14 @@ export default new Vuex.Store({
     rooms: [],
     username: localStorage.username,
     isLoggedin: null,
+    soal: []
   },
   mutations: {
     setRooms(state, payload) {
       state.rooms = payload;
+    },
+    setSoal(state, payload) {
+      state.soal = payload;
     },
     SET_ISLOGGEDIN(state, payload) {
       state.isLogin = payload;
