@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
       roomId = room.id
     }
     rooms.push(room)
-    console.log(rooms)
+    // console.log(rooms)
     io.emit('createRoom', {rooms, roomId})
   })
 
@@ -110,7 +110,7 @@ io.on('connection', (socket) => {
           if (element1.name == data.username) {
             // console.log('masuk for each3')
             element1.score++
-            console.log(element, 'ini di score')
+            // console.log(element, 'ini di score')
           }
         })
       }
