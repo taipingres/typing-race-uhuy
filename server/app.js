@@ -9,19 +9,41 @@ let rooms = []
 app.use(cors());
 
 io.on('connection', (socket) => {
+  socket.on('getRooms', function (response){
+    // console.log(response, 'ini responseeeee');
+    // console.log(rooms, 'ini rooommmssss')
+    io.emit('getRooms', rooms)
+  })
 
-  socket.on('createRoom', function (response) {
-    let room = {
-      name: response.name,
-      users: [{
-        name: response.admin,
-        score: 0,
-      }],
-      admin: response.admin
+  socket.on('createRoom', function (response){
+    let room;
+    let roomId;
+    if(rooms.length===0){
+      room = {
+        id: 1,
+        name: response.name,
+        users: [{
+          name: response.admin,
+          score: 0,
+        }],
+        admin: response.admin
+      }
+      roomId = room.id
+    } else{
+      room = {
+        id: rooms[rooms.length-1].id+1,
+        name: response.name,
+        users: [{
+          name: response.admin,
+          score: 0,
+        }],
+        admin: response.admin
+      }
+      roomId = room.id
     }
     rooms.push(room)
     // console.log(rooms)
-    io.emit('createRoom', rooms)
+    io.emit('createRoom', {rooms, roomId})
   })
 
   socket.on('joinGame', function (response) {
@@ -31,9 +53,10 @@ io.on('connection', (socket) => {
         name: response.username,
         score: 0
       })
+      let roomId = rooms[roomIndex].id
       // console.log(rooms)
       // socket.emit('joinGame', rooms)
-      io.emit('joinGame', rooms)
+      io.emit('joinGame', {rooms, roomId})
     })
   })
 
@@ -52,6 +75,13 @@ io.on('connection', (socket) => {
   //   // console.log(data.receiver)
   //   socket.emit(data.receiver, generateSoal.nama);
   // })
+
+  socket.on("startGame", function (data) {
+    // io.emit(data.receiver, data.soal)
+    // io.sockets.emit(data.receiver, data.soal)
+    socket.broadcast.emit(data.receiver, data.soal);
+  })
+
 
   socket.on("addScore", function (data) {
     // update score berdasarkan nama room dan username
@@ -80,7 +110,7 @@ io.on('connection', (socket) => {
           if (element1.name == data.username) {
             // console.log('masuk for each3')
             element1.score++
-            // console.log(element1.score, 'ini di score')
+            // console.log(element, 'ini di score')
           }
         })
       }

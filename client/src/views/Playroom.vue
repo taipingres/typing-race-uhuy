@@ -4,54 +4,26 @@
       <div class="box">
         <div class="sbox1">
           <div class="timerBox">
-            <p>12</p>
+            <p>timer</p>
           </div>
           <div class="tbox">
-            <span class="question">{{ this.soal }}</span>
+            <span class="question">{{ this.soalString }}</span>
           </div>
         </div>
-        <div class="sbox2">
-          <div class="score">
-            <p>
-              player1: 0
-              <br />
-              player2: 0
-              <br />
-              player3: 0
-              <br />
-              player4: 10
-              <br />
-            </p>
-          </div>
-
-          <div class="chat">
-            <p>
-              <span class="text-muted"> <i>player1 joined the game!</i> <br /> </span>
-              <span class="text-muted"> <i>player2 joined the game!</i> <br /> </span>
-              <span class="text-muted"> <i>player3 joined the game!</i> <br /> </span>
-              <span class="text-muted"> <i>player4 joined the game!</i> <br /> </span>
-              player1: Malulu <br />
-              player2: test <br />
-              player3: Malukk <br />
-              player4: Maluku <br />
-              <span class="text-muted">
-                <i>player4 correct, 10 points added to the score!</i>
-              </span>
-            </p>
-          </div>
-
+        <div class="answer">
           <div class="textCont">
             <input
               class="textInput"
               type="text"
-              placeholder="     input your answer here"
               v-model="inputJawaban"
+              placeholder="Input answer here"
             />
           </div>
-
           <div class="buttonContainer">
-            <button type="button" class="button btn btn-success" @click="startGame">START</button>
-            <button type="button" class="button btn btn-danger">LEAVE</button>
+            <div class="group">
+              <button type="button" class="button btn btn-success" @click="startGame">START</button>
+              <button type="button" class="button btn btn-danger">LEAVE</button>
+            </div>
           </div>
         </div>
       </div>
@@ -68,34 +40,58 @@ export default {
       soal: "",
       inputJawaban: "",
       timer: 3000,
-      soal: ""
+      soalString: "",
+      roomAdmin: "",
+      disabledButton: false
     };
   },
   created() {
     // this.getSoal();
-    // socket.on(localStorage.username, response => {
-    //   console.log("ini dicreated", response);
-    //   this.soal = response;
-    // });
-    // console.log("ini dicreated");
-    // if (localStorage.username) {
-    //   // console.log("ini diif");
-    //   socket.on(localStorage.username, data => {
-    //     // console.log("ini dicreated", data);
-    //     this.soal = data;
-    //   });
-    // }
+    socket.on(localStorage.room, response => {
+      console.log("ini dicreated", response);
+      this.soalString = response[0];
+      this.$store.commit("setSoal", response);
+    });
+
     socket.on("updateScore", data => {
       this.$store.commit("setRooms", data);
     });
   },
-  computed: {},
+  computed: {
+    stateRoom() {
+      return this.$store.state.rooms;
+    },
+    stateSoal() {
+      return this.$store.state.soal;
+    },
+    buttonDisabled() {
+      console.log(this.stateRoom[0]);
+
+      for (let i = 0; i < this.stateRoom.length; i++) {
+        if (this.stateRoom[i].name == localStorage.room) {
+          this.roomAdmin = this.stateRoom[i].admin;
+        }
+      }
+      if (this.roomAdmin != localStorage.username) {
+        return (this.disabledButton = true);
+      }
+    }
+  },
   watch: {
     inputJawaban(newAnswer) {
-      if (newAnswer === this.soal) {
-        console.log(newAnswer, "bawah");
+      if (newAnswer === this.soalString) {
+        let soals = this.stateSoal;
+        console.log(soals, "bawah");
+        for (let i = 0; i < soals.length; i++) {
+          // console.log("dalam for");
+          if (soals[i] === this.soalString) {
+            console.log(soals[i + 1]);
+            this.soalString = soals[i + 1];
+            break;
+            console.log(this.soalString, "dalam if dalam");
+          }
+        }
         this.addScore();
-        this.getSoal();
         this.inputJawaban = "";
       }
     },
@@ -107,7 +103,31 @@ export default {
   },
   methods: {
     startGame() {
-      this.getSoal();
+      // this.getSoal();
+      axios
+        .get("https://dev.farizdotid.com/api/daerahindonesia/kota", {
+          params: {
+            id_provinsi: 35
+          }
+        })
+        .then(response => {
+          let setSoal = [];
+
+          for (let i = 0; i < response.data.kota_kabupaten.length; i++) {
+            let randomNumber = Math.floor(Math.random() * (37 - 0 + 1)) + 0;
+            let generateSoal = response.data.kota_kabupaten[randomNumber].nama;
+            setSoal.push(generateSoal);
+          }
+          console.log(setSoal);
+          this.soalString = setSoal[0];
+          this.$store.commit("setSoal", setSoal);
+          //   console.log(response.data);
+          socket.emit("startGame", { receiver: localStorage.room, soal: setSoal });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
       // this.startTimer();
       // this.$store.state("setRooms", data);
       // socket.emit("addScore", { username: localStorage.username, room: localStorage.room });
@@ -135,7 +155,7 @@ export default {
           let generateSoal = response.data.kota_kabupaten[randomNumber].nama;
           this.soal = generateSoal;
           //   console.log(response.data);
-          // socket.emit("getSoal", { receiver: localStorage.username, soal: generateSoal });
+          socket.emit("getSoal", { receiver: localStorage.room, soal: generateSoal });
         })
         .catch(error => {
           console.log(error);
@@ -149,4 +169,83 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+body .box {
+  /* display: grid;
+    grid-template-columns: 3fr 1fr; */
+  /* background-color: red; */
+  /* height: 100vh; */
+  /* background-color: red; */
+  background-color: #3f72af;
+}
+.sbox1 {
+  background-color: #3f72af;
+}
+.sbox2 {
+  background-color: #3f72af;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.timerBox {
+  color: white;
+  width: 100%;
+  font-size: 50px;
+  margin: 0px auto;
+  text-align: center;
+  background-color: #112d4e;
+}
+.tbox {
+  text-align: center;
+  margin: 120px auto;
+}
+.question {
+  font-size: 130px;
+}
+.score {
+  font-size: 30px;
+  margin: 15px 10px;
+  background-color: white;
+  padding: 5px 20px;
+}
+.chat {
+  background-color: white;
+  padding: 20px;
+  margin: 10px;
+  height: 300px;
+  overflow: auto;
+}
+.textCont {
+  /* margin-top: 470px; */
+  margin: 10px;
+  /* width: 100%; */
+}
+.textInput {
+  display: block;
+  font-size: 30px;
+  /* padding-left: 50px; */
+  text-align: center;
+  width: 50%;
+  height: 60px;
+  margin: 0 auto;
+}
+.buttonContainer {
+  width: 100%;
+}
+.button {
+  width: 500px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.group {
+  width: 500px;
+  margin: 0 auto;
+}
+.answer {
+  margin: 0 auto;
+  height: 230px;
+  padding: 15px;
+  width: 100%;
+  background-color: #112d4e;
+}
+</style>

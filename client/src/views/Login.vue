@@ -23,12 +23,13 @@ export default {
   },
   methods: {
     login() {
-      localStorage.setItem("isloggedin", this.username);
-      this.$store.commit("SET_ISLOGGEDIN", this.username);
-      localStorage.setItem("username", this.username);
-      this.$router.push("/room");
-    }
-  }
+      this.$store.dispatch('getRooms');
+      localStorage.setItem('isloggedin', this.username);
+      this.$store.commit('SET_ISLOGGEDIN', this.username);
+      localStorage.setItem('username', this.username);
+      this.$router.push('/room');
+    },
+  },
 };
 </script>
 

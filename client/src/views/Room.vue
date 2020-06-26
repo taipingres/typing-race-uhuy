@@ -9,7 +9,8 @@
         <h6>{{ username }}</h6>
       </div>
     </div>
-    <div class="row justify-content-center m-3">
+    
+    <div class="row justify-content-center my-1">
       <div class="col-11">
         <div class="card" style="min-height:90vh">
           <div class="card-header">
@@ -17,34 +18,41 @@
               <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
-                  <h4>Choose Your Room</h4>
+                    <h4>Choose Your Room</h4>
                 </div>
                 <div class="col-3">
-                  <input type="text" class="form-control mr-sm-2" v-model="newRoom" />
-                  <input
-                    type="button"
+                    <input type="text"
+                    class="form-control mr-sm-2" v-model= "newRoom">
+                    <input type="button"
                     class="btn btn-outline-success my-2 my-sm-0"
-                    value="Create"
-                    @click="createRoom"
-                  />
+                    value="Create" @click= "createRoom">
                 </div>
               </div>
             </div>
           </div>
           <div class="card-body">
-            <div v-if="this.rooms.length !== 0">
-              <div v-for="(room, i) in rooms" :key="i">
-                <div class="card" style="width: 18rem;">
-                  <div class="container">
-                    <div class="row justify-content-center">
-                      <div class="card-body">
-                        <h5 class="card-title">
-                          {{ room.name }}
-                        </h5>
-                        <h6 class="card-title">admin: {{ room.admin }}</h6>
-                        <a class="btn btn-info" @click="joinGame(room.name)">
-                          Join
-                        </a>
+            <div v-if= "this.rooms.length !== 0">
+              <div class="container">
+                <div class="row">
+                  <div v-for = '(room, i) in rooms' :key= "i">
+                    <div class="col-3 m-3">
+                      <div class="card" style="width: 18rem;">
+                        <div class="container">
+                          <div class="row justify-content-center">
+                            <div class="card-body">
+                              <h5 class="card-title">
+                                {{room.name}}
+                              </h5>
+                              <h6 class="card-title">
+                                admin: {{room.admin}}
+                              </h6>
+                              <a class="btn btn-info"
+                              @click= "joinGame(room.name)" >
+                                Join
+                              </a>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -99,12 +107,18 @@ export default {
     }
   },
   created() {
-    socket.on("createRoom", data => {
-      this.$store.commit("setRooms", data);
+    socket.on('getRooms', (data) => {
+      this.$store.commit('setRooms', data);
+    });
+
+    socket.on('createRoom', (data) => {
+      this.$store.commit('setRooms', data.rooms);
+      localStorage.setItem("roomId", data.roomId);
     });
 
     socket.on("joinGame", data => {
-      this.$store.commit("setRooms", data);
+      this.$store.commit("setRooms", data.rooms);
+      localStorage.setItem("roomId", data.roomId);
     });
   }
 };
