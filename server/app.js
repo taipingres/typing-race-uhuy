@@ -80,6 +80,16 @@ io.on('connection', (socket) => {
     // io.emit(data.receiver, data.soal)
     // io.sockets.emit(data.receiver, data.soal)
     socket.broadcast.emit(data.receiver, data.soal);
+    let counter = 30;
+    let WinnerCountdown = setInterval(function(){
+      io.sockets.emit('counter', counter);
+      counter--
+      if (counter === 0) {
+        io.sockets.emit('counter', "Congratulations You WON!!");
+        io.sockets.emit('end', "endingGame");
+        clearInterval(WinnerCountdown);
+      }
+    }, 1000);
   })
 
 
@@ -119,10 +129,25 @@ io.on('connection', (socket) => {
 
   })
 
-  socket.on("endGame", function (data) {
+  socket.on("endGame", function (response) {
     // cari pemenang
     // broadcast
     // on_game = false => client balik ke halaman home / dashboard
+    roomId =  response.roomId;
+    let players = rooms[roomId-1].users;
+    players.sort(function(a, b){
+      return b.score - a.score;
+    });
+    let maxScore = players[0].score;
+    let winner = false;
+    for (let i in players){
+      if(players[i].score == maxScore){
+        if(players[i].name == response.username){
+          winner = true;
+        }
+      }
+    }
+    io.sockets.emit('endGame', {players, winner})
   })
 
 });
