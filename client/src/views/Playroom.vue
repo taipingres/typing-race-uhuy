@@ -21,7 +21,7 @@
           </div>
           <div class="buttonContainer">
             <div class="group">
-              <button type="button" class="button btn btn-success" @click="startGame">START</button>
+              <button type="button" class="button btn btn-success" @click="startGame" :disabled="disabledButton">START</button>
               <button type="button" class="button btn btn-danger">LEAVE</button>
             </div>
           </div>
