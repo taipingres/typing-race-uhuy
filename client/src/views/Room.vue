@@ -9,7 +9,7 @@
                 <h6>{{username}}</h6>
             </div>
         </div>
-        <div class="row justify-content-center m-3">
+        <div class="row justify-content-center my-1">
             <div class="col-11">
                 <div class="card" style="min-height:90vh">
                     <div class="card-header">
@@ -30,31 +30,37 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div v-if= "this.rooms.length !== 0">
+                      <div v-if= "this.rooms.length !== 0">
+                        <div class="container">
+                          <div class="row">
                             <div v-for = '(room, i) in rooms' :key= "i">
+                              <div class="col-3 m-3">
                                 <div class="card" style="width: 18rem;">
-                                    <div class="container">
-                                        <div class="row justify-content-center">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    {{room.name}}
-                                                </h5>
-                                                <h6 class="card-title">
-                                                    admin: {{room.admin}}
-                                                </h6>
-                                                <a class="btn btn-info"
-                                                @click= "joinGame(room.name)" >
-                                                    Join
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                  <div class="container">
+                                      <div class="row justify-content-center">
+                                          <div class="card-body">
+                                              <h5 class="card-title">
+                                                  {{room.name}}
+                                              </h5>
+                                              <h6 class="card-title">
+                                                  admin: {{room.admin}}
+                                              </h6>
+                                              <a class="btn btn-info"
+                                              @click= "joinGame(room.name)" >
+                                                  Join
+                                              </a>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              </div>
                             </div>
+                          </div>
                         </div>
-                        <div v-else>
-                            <p class="text-center">No available room.</p>
-                        </div>
+                      </div>
+                      <div v-else>
+                          <p class="text-center">No available room.</p>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -98,6 +104,10 @@ export default {
     },
   },
   created() {
+    socket.on('getRooms', (data) => {
+      this.$store.commit('setRooms', data);
+    });
+
     socket.on('createRoom', (data) => {
       this.$store.commit('setRooms', data);
     });

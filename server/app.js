@@ -11,9 +11,12 @@ app.use(cors());
 let rooms = []
 
 io.on('connection', (socket) => {
-  socket.on('coba', function (response){
-      io.emit('coba', response)
+  socket.on('getRooms', function (response){
+    // console.log(response, 'ini responseeeee');
+    // console.log(rooms, 'ini rooommmssss')
+    io.emit('getRooms', rooms)
   })
+
   socket.on('createRoom', function (response){
     let room = {
       name: response.name,
@@ -35,8 +38,8 @@ io.on('connection', (socket) => {
         name: response.username,
         score: 0
       })
-      console.log(rooms)
-      socket.emit('joinGame', rooms)
+      // console.log(rooms)
+      io.emit('joinGame', rooms)
     })
   })
 });

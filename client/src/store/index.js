@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import socket from '@/config/socket';
 
 Vue.use(Vuex);
 
@@ -22,6 +23,9 @@ export default new Vuex.Store({
       if (localStorage.isloggedin) {
         commit('SET_ISLOGGEDIN', localStorage.isloggedin);
       }
+    },
+    getRooms(context) {
+      socket.emit('getRooms', context.state.rooms);
     },
   },
   modules: {
