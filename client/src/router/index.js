@@ -9,7 +9,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: Login,
   },
@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!isLoggedIn) {
       next({
-        path: '/login',
+        path: '/',
       });
     } else {
       next();

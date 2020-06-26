@@ -2,14 +2,13 @@
   <div class="container">
     <div class="row justify-content-start px-5">
       <div class="col-2"></div>
-      <div class="col-8">
+      <div class="col-8 mb-3">
         <h1 style="text-center">Typing Race</h1>
       </div>
       <div class="col-2 align-self-end">
-        <h6>{{ username }}</h6>
+        <h6>Welcome, {{ username }}</h6>
       </div>
     </div>
-    
     <div class="row justify-content-center my-1">
       <div class="col-11">
         <div class="card" style="min-height:90vh">
@@ -18,13 +17,13 @@
               <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
-                    <h4>Choose Your Room</h4>
+                    <h4 class="mt-4">Choose Your Room</h4>
                 </div>
                 <div class="col-3">
                     <input type="text"
                     class="form-control mr-sm-2" v-model= "newRoom">
                     <input type="button"
-                    class="btn btn-outline-success my-2 my-sm-0"
+                    class="btn bg-success mt-2 "
                     value="Create" @click= "createRoom">
                 </div>
               </div>
@@ -60,7 +59,7 @@
               </div>
             </div>
             <div v-else>
-              <p class="text-center">No available room.</p>
+              <p class="text-center">Pick available room</p>
             </div>
           </div>
         </div>
@@ -107,6 +106,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('getRooms');
     socket.on('getRooms', (data) => {
       this.$store.commit('setRooms', data);
     });
@@ -123,3 +123,17 @@ export default {
   }
 };
 </script>
+<style>
+  .btn{
+    width: 100%;
+  }
+  body {
+    background-color: #112d4e;
+  }
+  h1, h6 {
+      color: white;
+  }
+  .container {
+      overflow: auto;
+  }
+</style>
