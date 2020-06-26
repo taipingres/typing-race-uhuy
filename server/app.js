@@ -53,6 +53,13 @@ io.on('connection', (socket) => {
   //   socket.emit(data.receiver, generateSoal.nama);
   // })
 
+  socket.on("startGame", function (data) {
+    // io.emit(data.receiver, data.soal)
+    // io.sockets.emit(data.receiver, data.soal)
+    socket.broadcast.emit(data.receiver, data.soal);
+  })
+
+
   socket.on("addScore", function (data) {
     // update score berdasarkan nama room dan username
     // {
@@ -80,7 +87,7 @@ io.on('connection', (socket) => {
           if (element1.name == data.username) {
             // console.log('masuk for each3')
             element1.score++
-            // console.log(element1.score, 'ini di score')
+            console.log(element, 'ini di score')
           }
         })
       }
