@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-3 my-3 border">
+  <div class="container p-3 my-3">
     <!-- <h1 v-if="checkWinner">
       Congratulation You're the Winner!
     </h1>
@@ -10,6 +10,7 @@
     <h2>
       Below are the final Score!
     </h2>
+    <br>
     <div class="row justify-content-md-center">
       <div class="col-6">
         <table class="table table-dark">
@@ -26,6 +27,9 @@
               </tr>
           </tbody>
         </table>
+
+        <input type="button" @click = "backToLobby" value="Leave" 
+        class="btn btn-danger">
       </div>
     </div>
   </div>
@@ -45,7 +49,10 @@ export default {
     };
   },
   methods: {
-
+    backToLobby(){
+      this.$store.dispatch('getRooms')
+      this.$router.push('/room')
+    }
   },
   created() {
     socket.emit('endGame', { username: this.username, roomId: this.roomId} );
@@ -58,5 +65,7 @@ export default {
 </script>
 
 <style>
-
+h2 {
+    color: white;
+  }
 </style>

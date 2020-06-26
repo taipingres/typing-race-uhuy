@@ -1,12 +1,17 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000
-const cors = require('cors')
+const cors = require('cors');
+const { RSA_NO_PADDING } = require('constants');
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 let rooms = []
 
 app.use(cors());
+
+// app.get('/', (req, res)=>{
+//   res.send('welcome to the jungle')
+// })
 
 io.on('connection', (socket) => {
   socket.on('getRooms', function (response){
