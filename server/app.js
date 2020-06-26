@@ -16,17 +16,34 @@ io.on('connection', (socket) => {
   })
 
   socket.on('createRoom', function (response){
-    let room = {
-      name: response.name,
-      users: [{
-        name: response.admin,
-        score: 0,
-      }],
-      admin: response.admin
+    let room;
+    let roomId;
+    if(rooms.length===0){
+      room = {
+        id: 1,
+        name: response.name,
+        users: [{
+          name: response.admin,
+          score: 0,
+        }],
+        admin: response.admin
+      }
+      roomId = room.id
+    } else{
+      room = {
+        id: rooms[rooms.length-1].id+1,
+        name: response.name,
+        users: [{
+          name: response.admin,
+          score: 0,
+        }],
+        admin: response.admin
+      }
+      roomId = room.id
     }
     rooms.push(room)
-    // console.log(rooms)
-    io.emit('createRoom', rooms)
+    console.log(rooms)
+    io.emit('createRoom', {rooms, roomId})
   })
 
   socket.on('joinGame', function (response) {
@@ -36,9 +53,10 @@ io.on('connection', (socket) => {
         name: response.username,
         score: 0
       })
+      let roomId = rooms[roomIndex].id
       // console.log(rooms)
       // socket.emit('joinGame', rooms)
-      io.emit('joinGame', rooms)
+      io.emit('joinGame', {rooms, roomId})
     })
   })
 
